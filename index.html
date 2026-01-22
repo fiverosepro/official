@@ -219,6 +219,42 @@
         .schedule-meta{
             margin-top: 10px;
         }
+
+
+        /* --- SCHEDULE mobile layout (time pill stays top-left, content aligns left) --- */
+        @media (max-width: 640px){
+            .schedule-card{
+                grid-template-columns: 1fr;
+                padding: 18px 16px 16px 16px;
+            }
+            .schedule-time{
+                position: absolute;
+                top: 14px;
+                left: 14px;
+                margin: 0;
+                z-index: 2;
+            }
+            .schedule-main{
+                padding-top: 34px; /* space for time pill */
+            }
+            .schedule-head{
+                justify-content: flex-start;
+                gap: 12px;
+            }
+            .avatar{
+                width: 56px;
+                height: 56px;
+            }
+            .name{
+                font-size: 1.25rem;
+            }
+            .desc{
+                margin-top: 8px;
+            }
+            .badges{
+                justify-content: flex-start;
+            }
+        }
         .desc{
             font-size: 0.95rem;
             line-height: 1.55;
