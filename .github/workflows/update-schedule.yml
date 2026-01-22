@@ -1,0 +1,48 @@
+name: Update schedule.json
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"  # every 15 minutes (UTC)
+
+permissions:
+  contents: write
+
+concurrency:
+  group: schedule-update
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Generate schedule.json
+        env:
+          CALENDAR_ICS_URL: ${{ vars.CALENDAR_ICS_URL }}
+          SCHEDULE_TZ: "Asia/Tokyo"
+          SCHEDULE_DAYS_AHEAD: "14"
+          SCHEDULE_OUT: "schedule.json"
+        run: node scripts/fetch_schedule.mjs
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add schedule.json
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "chore: update schedule.json"
+          git push
