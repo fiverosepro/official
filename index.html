@@ -11,6 +11,7 @@
     <link rel="icon" href="images/fiverose_icon.png" type="image/png">
     <link rel="apple-touch-icon" href="images/fiverose_icon.png">
 
+    <meta property="og:site_name" content="FiveRose Production">
     <meta property="og:title" content="FiveRose Production｜VTuber事務所公式サイト">
     <meta property="og:description" content="所属VTuberの配信スケジュール・最新情報はこちら。">
     <meta property="og:image" content="https://fiverosepro.github.io/official/ogp.png">
@@ -21,6 +22,9 @@
     <meta name="twitter:title" content="FiveRose Production｜VTuber事務所公式サイト">
     <meta name="twitter:description" content="所属VTuberの配信スケジュール・最新情報はこちら。">
     <meta name="twitter:image" content="https://fiverosepro.github.io/official/ogp.png">
+    <!-- 追加: X公式アカウント紐付け -->
+    <meta name="twitter:site" content="@FiveRosePro">
+    <meta name="twitter:creator" content="@FiveRosePro">
 
     <script type="application/ld+json">
     {
@@ -81,7 +85,7 @@
         nav ul { display: flex; gap: 30px; }
         nav a:hover { color: var(--gold); }
 
-        /* 追加: 公式SNSボタン（ヘッダー用） */
+        /* 公式SNSボタン（ヘッダー用） */
         .sns-btn-mini{
             display: inline-flex;
             align-items: center;
@@ -189,7 +193,7 @@
 
         footer { background: #0d0505; padding: 40px; text-align: center; color: #666; font-size: 0.9rem; }
 
-        /* 追加: フッター公式SNSボタン */
+        /* フッター公式SNSボタン */
         .footer-links{
             margin-top: 16px;
             display: flex;
@@ -269,7 +273,6 @@
         }
         .time-pill{
             white-space: nowrap;
-
             display:inline-block;
             padding: 8px 14px;
             border-radius: 999px;
@@ -281,7 +284,6 @@
             letter-spacing: 0.05em;
         }
 
-        /* Time pill states */
         .time-pill.onair{
             background: linear-gradient(135deg, #b11226, #ff3b3b);
             color: #fff;
@@ -298,9 +300,6 @@
             color: rgba(255,255,255,0.88);
             box-shadow: none;
             animation: none;
-        }
-        .time-pill.scheduled{
-            /* default look */
         }
         @keyframes onair-pulse{
             0%{
@@ -323,89 +322,36 @@
             }
         }
 
-        .schedule-main{
-            display:block;
-            min-width:0;
-        }
-        .schedule-head{
-            display:flex;
-            align-items:center;
-            gap: 12px;
-            min-width:0;
-        }
+        .schedule-main{ display:block; min-width:0; }
+        .schedule-head{ display:flex; align-items:center; gap: 12px; min-width:0; }
         .avatar{
-            width: 52px;
-            height: 52px;
-            border-radius: 999px;
+            width: 52px; height: 52px; border-radius: 999px;
             border: 2px solid rgba(197,160,89,0.65);
-            overflow:hidden;
-            flex: 0 0 auto;
+            overflow:hidden; flex: 0 0 auto;
             background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), rgba(0,0,0,0));
         }
-        .avatar img{
-            width:100%;
-            height:100%;
-            object-fit: cover;
-        }
+        .avatar img{ width:100%; height:100%; object-fit: cover; }
         .name{
-            font-size: 1.25rem;
-            margin: 0;
-            white-space: nowrap;
-            overflow:hidden;
-            text-overflow: ellipsis;
-            min-width:0;
+            font-size: 1.25rem; margin: 0;
+            white-space: nowrap; overflow:hidden; text-overflow: ellipsis; min-width:0;
         }
-        .schedule-meta{
-            margin-top: 10px;
-        }
+        .schedule-meta{ margin-top: 10px; }
 
-        /* --- SCHEDULE mobile layout --- */
         @media (max-width: 640px){
-            .schedule-card{
-                grid-template-columns: 1fr;
-                padding: 18px 16px 16px 16px;
-            }
-            .schedule-time{
-                position: absolute;
-                top: 14px;
-                left: 14px;
-                margin: 0;
-                z-index: 2;
-            }
-            .schedule-main{
-                padding-top: 34px;
-            }
-            .schedule-head{
-                justify-content: flex-start;
-                gap: 12px;
-            }
-            .avatar{
-                width: 56px;
-                height: 56px;
-            }
-            .name{
-                font-size: 1.25rem;
-            }
-            .desc{
-                margin-top: 8px;
-            }
-            .badges{
-                justify-content: flex-start;
-            }
+            .schedule-card{ grid-template-columns: 1fr; padding: 18px 16px 16px 16px; }
+            .schedule-time{ position: absolute; top: 14px; left: 14px; margin: 0; z-index: 2; }
+            .schedule-main{ padding-top: 34px; }
+            .schedule-head{ justify-content: flex-start; gap: 12px; }
+            .avatar{ width: 56px; height: 56px; }
+            .name{ font-size: 1.25rem; }
+            .desc{ margin-top: 8px; }
+            .badges{ justify-content: flex-start; }
         }
         .desc{
-            font-size: 0.95rem;
-            line-height: 1.55;
-            margin: 0;
-            color: rgba(255,255,255,0.88);
-            word-break: break-word;
+            font-size: 0.95rem; line-height: 1.55; margin: 0;
+            color: rgba(255,255,255,0.88); word-break: break-word;
         }
-        .badges{
-            margin-top: 10px;
-            display:flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+        .badges{ margin-top: 10px; display:flex; flex-wrap: wrap; gap: 10px; }
         .badge{
             border: 1px solid rgba(197,160,89,0.7);
             color: var(--gold);
@@ -433,11 +379,7 @@
                 padding: 14px 14px 14px 12px;
                 border-radius: 14px;
             }
-            .time-pill{
-                white-space: nowrap;
-                padding: 7px 12px;
-                font-size: 0.95rem;
-            }
+            .time-pill{ padding: 7px 12px; font-size: 0.95rem; }
             .avatar{ width: 44px; height: 44px; }
             .name{ font-size: 1.1rem; }
             .desc{ font-size: 0.92rem; }
@@ -448,60 +390,23 @@
             .member-row, .member-row:nth-child(even) { flex-direction: column; text-align: center; gap: 20px; }
             .member-img-area { width: 240px; height: 320px; margin: 0 auto; }
             .hero h1 { font-size: 2.2rem; }
-
             nav { display: none; }
             .sns-btn-mini { display: none; }
         }
 
-        /* --- Strong mobile overrides for schedule card --- */
         @media (max-width: 640px){
-            .schedule-list{
-                padding: 14px;
-            }
-            .schedule-card{
-                display: block !important;
-                padding: 18px 16px 16px 16px !important;
-            }
-            .schedule-time{
-                position: absolute !important;
-                top: 12px !important;
-                left: 12px !important;
-                margin: 0 !important;
-                z-index: 3 !important;
-            }
-            .time-pill{
-                max-width: 100%;
-                font-size: 13px;
-                padding: 7px 12px;
-            }
-            .schedule-main{
-                padding-top: 46px !important;
-            }
-            .schedule-head{
-                display: flex !important;
-                align-items: center !important;
-                justify-content: flex-start !important;
-                gap: 12px !important;
-            }
-            .avatar{
-                width: 54px !important;
-                height: 54px !important;
-                flex: 0 0 auto;
-            }
-            .name{
-                white-space: nowrap !important;
-            }
-            .desc{
-                margin-top: 8px !important;
-            }
-            .badges{
-                justify-content: flex-start !important;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
+            .schedule-list{ padding: 14px; }
+            .schedule-card{ display: block !important; padding: 18px 16px 16px 16px !important; }
+            .schedule-time{ position: absolute !important; top: 12px !important; left: 12px !important; margin: 0 !important; z-index: 3 !important; }
+            .time-pill{ max-width: 100%; font-size: 13px; padding: 7px 12px; }
+            .schedule-main{ padding-top: 46px !important; }
+            .schedule-head{ display: flex !important; align-items: center !important; justify-content: flex-start !important; gap: 12px !important; }
+            .avatar{ width: 54px !important; height: 54px !important; flex: 0 0 auto; }
+            .name{ white-space: nowrap !important; }
+            .desc{ margin-top: 8px !important; }
+            .badges{ justify-content: flex-start !important; flex-wrap: wrap; gap: 10px; }
         }
 
-        /* --- Desktop: prevent time pill overlapping avatar --- */
         @media (min-width: 641px){
             .schedule-card{
                 display: grid;
@@ -518,12 +423,8 @@
                 z-index: 1;
                 align-self: start;
             }
-            .schedule-main{
-                padding-top: 0;
-            }
-            .schedule-head{
-                gap: 14px;
-            }
+            .schedule-main{ padding-top: 0; }
+            .schedule-head{ gap: 14px; }
         }
     </style>
 </head>
@@ -542,7 +443,6 @@
                 </ul>
             </nav>
 
-            <!-- 追加: 公式SNS（PC表示用） -->
             <a class="sns-btn-mini" href="https://x.com/FiveRosePro" target="_blank" rel="noopener" aria-label="FiveRose Production 公式X">
                 <span class="sns-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24">
@@ -568,7 +468,6 @@
         <p>5つの花言葉が織りなす、<br>出会いと感謝の物語。</p>
     </section>
 
-    <!-- ABOUT -->
     <section id="about">
         <div class="section-header">
             <span class="section-title-en">ABOUT</span>
@@ -586,7 +485,6 @@
         </div>
     </section>
 
-    <!-- SCHEDULE -->
     <section id="schedule">
         <div class="section-header">
             <span class="section-title-en">SCHEDULE</span>
@@ -611,7 +509,6 @@
         </div>
     </section>
 
-    <!-- MEMBER -->
     <section id="member">
         <div class="section-header">
             <span class="section-title-en">MEMBER</span>
@@ -620,7 +517,6 @@
 
         <div class="member-list">
 
-            <!-- メンバー1：御狗丸てち -->
             <div class="member-row">
                 <div class="member-img-area">
                     <img src="images/test.png" alt="御狗丸てち">
@@ -646,7 +542,6 @@
                 </div>
             </div>
 
-            <!-- メンバー2：御狗丸あさって -->
             <div class="member-row">
                 <div class="member-img-area">
                     <img src="images/test.png" alt="御狗丸あさって">
@@ -673,7 +568,6 @@
                 </div>
             </div>
 
-            <!-- メンバー3：ぺぺろ -->
             <div class="member-row">
                 <div class="member-img-area">
                     <img src="images/test.png" alt="ぺぺろ">
@@ -699,7 +593,6 @@
                 </div>
             </div>
 
-            <!-- メンバー4：まぁち -->
             <div class="member-row">
                 <div class="member-img-area">
                     <img src="images/test.png" alt="まぁち">
@@ -748,7 +641,6 @@
 
         <div style="margin-top:14px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
             <a href="https://x.com/FiveRosePro" target="_blank" rel="noopener" style="border-bottom:1px solid var(--gold); padding-bottom:5px;">https://x.com/FiveRosePro</a>
-            <a href="https://www.youtube.com/@FiveRose-pro" target="_blank" rel="noopener" style="border-bottom:1px solid var(--gold); padding-bottom:5px;">https://www.youtube.com/@FiveRose-pro</a>
         </div>
     </section>
 
