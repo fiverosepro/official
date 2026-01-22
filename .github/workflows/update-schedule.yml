@@ -3,14 +3,14 @@ name: Update schedule.json
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/5 * * * *"  # every 15 minutes (UTC)
+    - cron: "*/30 * * * *"  # every 15 minutes (UTC)
 
 permissions:
   contents: write
 
-concurrency:
-  group: schedule-update
-  cancel-in-progress: true
+#concurrency:
+#  group: schedule-update
+#  cancel-in-progress: true
 
 jobs:
   update:
