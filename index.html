@@ -172,6 +172,8 @@
             background: linear-gradient(180deg, rgba(197,160,89,0.95), rgba(168,28,48,0.55));
         }
         .time-pill{
+            white-space: nowrap;
+
             display:inline-block;
             padding: 8px 14px;
             border-radius: 999px;
@@ -257,7 +259,9 @@
                 padding: 14px 14px 14px 12px;
                 border-radius: 14px;
             }
-            .time-pill{ padding: 7px 12px; font-size: 0.95rem; }
+            .time-pill{
+            white-space: nowrap;
+ padding: 7px 12px; font-size: 0.95rem; }
             .avatar{ width: 44px; height: 44px; }
             .name{ font-size: 1.1rem; }
             .desc{ font-size: 0.92rem; }
@@ -501,6 +505,36 @@
         return `${ts} 〜 ${te}`;
     }
 
+
+    function formatStartLabel(ev){
+        // Prefer preformatted JST from schedule.json if present: "YYYY/MM/DD HH:mm"
+        if(ev && ev.start_jst){
+            const d = String(ev.start_jst).slice(0, 10); // YYYY/MM/DD
+            const t = String(ev.start_jst).slice(11, 16); // HH:mm
+            const parts = d.split("/");
+            if(parts.length === 3){
+                const m = Number(parts[1]);
+                const day = Number(parts[2]);
+                if(Number.isFinite(m) && Number.isFinite(day) && t){
+                    return `${m}/${day} ${t}`;
+                }
+            }
+        }
+        // Fallback: format from ISO start
+        if(ev && ev.start){
+            const d = new Date(ev.start);
+            const fmt = new Intl.DateTimeFormat("ja-JP", {
+                timeZone: TZ,
+                month: "numeric",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+            return fmt.format(d);
+        }
+        return "--/-- --:--";
+    }
+
     function escapeHtml(str){
         return String(str ?? "").replace(/[&<>"']/g, (m) => ({
             "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
@@ -538,14 +572,14 @@
             }
 
             list.innerHTML = items.map(ev => {
-                const name = ev.name ?? "";
+                const name = ev.streamer ?? ev.name ?? "";
                 const title = ev.title ?? "";
                 const platform = (ev.platform ?? "").toLowerCase();
                 const avatarSrc = "images/" + normalizeFileName(name) + ".png";
 
                 const start = ev.start;
                 const end = ev.end;
-                const timePill = start ? formatTimeHM(start) : "--:--";
+                const timePill = formatStartLabel(ev);
 
                 const badgePlatform = platform ? `<span class="badge">${escapeHtml(platform)}</span>` : "";
                 const badgeRange = (start && end) ? `<span class="badge">${escapeHtml(formatRange(start,end))}</span>` : "";
