@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "node-ical": "^0.17.4"
+    "node-ical": "^0.22.1"
   }
 }
