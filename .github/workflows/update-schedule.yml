@@ -43,6 +43,7 @@ jobs:
           CALENDAR_ICS_URL: ${{ vars.CALENDAR_ICS_URL || secrets.CALENDAR_ICS_URL }}
           SCHEDULE_TZ: "Asia/Tokyo"
           SCHEDULE_DAYS_AHEAD: "14"
+          SCHEDULE_DAYS_BACK: "3"
           SCHEDULE_OUT: "schedule.json"
         run: node scripts/fetch_schedule.mjs
 
