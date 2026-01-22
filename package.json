@@ -1,0 +1,8 @@
+{
+  "name": "fiverose-site",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "node-ical": "^0.17.4"
+  }
+}

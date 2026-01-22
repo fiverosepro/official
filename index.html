@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiveRose | Official Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- デザイン設定 --- */
+        :root {
+            --rose-red: #a81c30;
+            --rose-light: #d46b7d;
+            --gold: #c5a059;
+            --bg-main: #140808;
+            --bg-lighter: #1f1212;
+            --text-main: #fcfcfc;
+            --header-height: 80px;
+        }
+
+        html { scroll-behavior: smooth; scroll-padding-top: var(--header-height); }
+
+        body {
+            margin: 0;
+            font-family: 'Shippori Mincho', serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 2.0;
+            background-image: radial-gradient(circle at 50% 30%, rgba(168, 28, 48, 0.1) 0%, transparent 60%);
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; padding: 0; margin: 0; }
+        .en-font { font-family: 'Cinzel', serif; }
+
+        /* ヘッダー */
+        header {
+            position: fixed; top: 0; width: 100%; height: var(--header-height);
+            background: rgba(20, 8, 8, 0.95); backdrop-filter: blur(5px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; z-index: 1000; box-sizing: border-box;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+        }
+        .logo { font-family: 'Cinzel', serif; font-size: 1.8rem; display: flex; gap: 2px; /* 文字間を少し詰める */ }
+        .logo span { color: var(--rose-red); }
+        nav ul { display: flex; gap: 30px; }
+        nav a:hover { color: var(--gold); }
+
+        /* ヒーロー */
+        .hero {
+            height: 80vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center;
+        }
+        .hero h1 { font-size: 3.5rem; margin: 0 0 20px; font-weight: 400; letter-spacing: 0.1em; }
+        .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.8); }
+
+        /* セクション共通 */
+        section { padding: 80px 5%; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-title-en { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--gold); display: block; }
+        .section-title-ja { font-size: 1rem; color: var(--rose-light); letter-spacing: 3px; }
+
+        /* ABOUT */
+        .about-box {
+            max-width: 800px; margin: 0 auto; text-align: center;
+            background: rgba(255,255,255,0.02); padding: 40px;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            border-radius: 8px;
+        }
+
+        /* MEMBER 詳細レイアウト */
+        .member-list { max-width: 1000px; margin: 0 auto; }
+        
+        .member-row { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            gap: 50px; 
+            margin-bottom: 80px;
+            padding: 20px;
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+        .member-row:hover { background: rgba(255,255,255,0.02); }
+        .member-row:nth-child(even) { flex-direction: row-reverse; }
+
+        .member-img-area {
+            width: 300px;
+            height: 400px;
+            flex-shrink: 0;
+            background: radial-gradient(circle at center, #2a1a1a 0%, var(--bg-lighter) 70%);
+            border: 1px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        
+        .member-img-area img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: top center;
+            transition: transform 0.5s;
+        }
+        .member-img-area:hover img { transform: scale(1.05); }
+
+        .member-text-area { flex: 1; }
+        .member-role { font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.9rem; letter-spacing: 2px; display: block; margin-bottom: 5px; }
+        .member-name { font-size: 1.8rem; margin: 0 0 15px 0; border-bottom: 1px solid var(--rose-red); display: inline-block; padding-bottom: 5px; }
+        .member-desc { font-size: 0.95rem; margin-bottom: 15px; color: #ddd; line-height: 1.8; }
+        .member-tags { font-size: 0.85rem; color: #aaa; margin-bottom: 20px; }
+        .tag { color: var(--gold); margin-right: 10px; border: 1px solid var(--gold); padding: 2px 8px; border-radius: 15px; }
+        .sns-btn { 
+            display: inline-block; padding: 6px 20px; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            font-size: 0.8rem; margin-right: 10px; transition: 0.3s; color: #ccc;
+        }
+        .sns-btn:hover { background: var(--rose-red); border-color: var(--rose-red); color: #fff; }
+
+        .fifth-rose { text-align: center; padding: 60px 20px; background: linear-gradient(90deg, transparent, rgba(168, 28, 48, 0.1), transparent); margin-top: 50px; }
+
+        footer { background: #0d0505; padding: 40px; text-align: center; color: #666; font-size: 0.9rem; }
+        /* SCHEDULE */
+        .schedule-wrap{
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .schedule-bar{
+            display:flex;
+            align-items:flex-end;
+            justify-content:space-between;
+            padding: 24px 26px;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            border-radius: 16px 16px 0 0;
+            background: rgba(255,255,255,0.02);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.18);
+        }
+        .schedule-upcoming{
+            font-size: 2rem;
+            line-height: 1.2;
+            color: var(--gold);
+            letter-spacing: 0.08em;
+        }
+        .schedule-updated{
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.75);
+        }
+        .schedule-list{
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            border-top: none;
+            border-radius: 0 0 16px 16px;
+            padding: 22px;
+            background: rgba(255,255,255,0.01);
+        }
+        .schedule-card{
+            display:grid;
+            grid-template-columns: 92px 1fr;
+            gap: 16px;
+            padding: 18px 18px 18px 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(197,160,89,0.22);
+            background: rgba(255,255,255,0.02);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        .schedule-card:last-child{ margin-bottom: 0; }
+        .schedule-card::before{
+            content:"";
+            position:absolute;
+            left:0; top:0; bottom:0;
+            width: 7px;
+            background: linear-gradient(180deg, rgba(197,160,89,0.95), rgba(168,28,48,0.55));
+        }
+        .time-pill{
+            display:inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.9);
+            color: #2a1515;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.05em;
+        }
+        .schedule-main{
+            display:block;
+            min-width:0;
+        }
+        .schedule-head{
+            display:flex;
+            align-items:center;
+            gap: 12px;
+            min-width:0;
+        }
+        .avatar{
+            width: 52px;
+            height: 52px;
+            border-radius: 999px;
+            border: 2px solid rgba(197,160,89,0.65);
+            overflow:hidden;
+            flex: 0 0 auto;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), rgba(0,0,0,0));
+        }
+        .avatar img{
+            width:100%;
+            height:100%;
+            object-fit: cover;
+        }
+        .name{
+            font-size: 1.25rem;
+            margin: 0;
+            white-space: nowrap;
+            overflow:hidden;
+            text-overflow: ellipsis;
+            min-width:0;
+        }
+        .schedule-meta{
+            margin-top: 10px;
+        }
+        .desc{
+            font-size: 0.95rem;
+            line-height: 1.55;
+            margin: 0;
+            color: rgba(255,255,255,0.88);
+            word-break: break-word;
+        }
+        .badges{
+            margin-top: 10px;
+            display:flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .badge{
+            border: 1px solid rgba(197,160,89,0.7);
+            color: var(--gold);
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            white-space: nowrap;
+            word-break: keep-all;
+            overflow-wrap: normal;
+        }
+        .schedule-note{
+            text-align:center;
+            margin-top: 18px;
+            color: rgba(255,255,255,0.55);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .schedule-upcoming{ font-size: 1.6rem; }
+            .schedule-bar{ padding: 18px 16px; }
+            .schedule-list{ padding: 16px; }
+            .schedule-card{
+                grid-template-columns: 78px 1fr;
+                gap: 10px;
+                padding: 14px 14px 14px 12px;
+                border-radius: 14px;
+            }
+            .time-pill{ padding: 7px 12px; font-size: 0.95rem; }
+            .avatar{ width: 44px; height: 44px; }
+            .name{ font-size: 1.1rem; }
+            .desc{ font-size: 0.92rem; }
+            .badge{ font-size: 0.75rem; padding: 5px 10px; }
+        }
+
+        @media (max-width: 768px) {
+            .member-row, .member-row:nth-child(even) { flex-direction: column; text-align: center; gap: 20px; }
+            .member-img-area { width: 240px; height: 320px; margin: 0 auto; }
+            .hero h1 { font-size: 2.2rem; }
+            nav { display: none; }
+        }
+    </style>
+</head>
+<body id="top">
+
+    <header>
+        <!-- ロゴ修正: FiveRose -->
+        <div class="logo">Five<span>Rose</span></div>
+        <nav>
+            <ul>
+                <li><a href="#about">ABOUT</a></li>
+                                <li><a href="#schedule">SCHEDULE</a></li>
+<li><a href="#member">MEMBER</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1 class="en-font">FiveRose</h1>
+        <p>5つの花言葉が織りなす、<br>出会いと感謝の物語。</p>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="section-header">
+            <span class="section-title-en">ABOUT</span>
+            <span class="section-title-ja">コンセプト</span>
+        </div>
+        <div class="about-box">
+            <p>
+                「FiveRose」という名は「5本の薔薇」に由来します。<br>
+                その花言葉は<strong style="color:var(--gold);">「あなたに出会えた事の心からの喜び」</strong>。<br><br>
+                ここに集う4名のタレントたちは、<br>
+                それぞれの色と香りで、皆様の日々を鮮やかに彩ります。<br>
+                そして、5本目の薔薇は——<br>
+                いつも彼らたちを支えてくださる、あなた自身です。
+            </p>
+        </div>
+    </section>
+
+
+    <!-- SCHEDULE -->
+    <section id="schedule">
+        <div class="section-header">
+            <span class="section-title-en">SCHEDULE</span>
+            <span class="section-title-ja">配信予定</span>
+        </div>
+
+        <div class="schedule-wrap">
+            <div class="schedule-bar">
+                <div class="schedule-bar-left">
+                    <span class="en-font schedule-upcoming">Upcoming<br>Streams</span>
+                </div>
+                <div class="schedule-bar-right">
+                    <span id="schedule-updated" class="schedule-updated">更新: --</span>
+                </div>
+            </div>
+
+            <div id="schedule-list" class="schedule-list" aria-live="polite"></div>
+
+            <p class="schedule-note">
+                予定は変更になることがあります。最新情報は各タレントのSNSもあわせてご確認ください。
+            </p>
+        </div>
+    </section>
+
+
+    <!-- MEMBER -->
+    <section id="member">
+        <div class="section-header">
+            <span class="section-title-en">MEMBER</span>
+            <span class="section-title-ja">所属タレント紹介</span>
+        </div>
+        
+        <div class="member-list">
+            
+            <!-- メンバー1：御狗丸てち -->
+            <div class="member-row">
+                <div class="member-img-area">
+                    <img src="images/test.png" alt="御狗丸てち">
+                </div>
+                <div class="member-text-area">
+                    <span class="member-role">The Red Rose - Passion</span>
+                    <h3 class="member-name">御狗丸てち</h3>
+                    <p class="member-desc">
+                        「みんなの心に火を灯す、情熱の薔薇でありたい。」<br>
+                        FiveRoseのリーダー的存在。凛とした歌声と、時折見せる天然な一面のギャップでファンを魅了する。<br>
+                        リスナーを「共犯者」と呼び、共に熱狂できるライブ作りを目指している。
+                    </p>
+                    <div class="member-tags">
+                        <span class="tag">#歌枠</span>
+                        <span class="tag">#雑談</span>
+                        <span class="tag">#リーダー</span>
+                    </div>
+                    <div>
+                        <a href="#" class="sns-btn">YouTube</a>
+                        <a href="#" class="sns-btn">Twitch</a>
+                        <a href="#" class="sns-btn">X (Twitter)</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- メンバー2：御狗丸あさって -->
+            <div class="member-row">
+                <div class="member-img-area">
+                    <img src="images/test.png" alt="御狗丸あさって">
+                </div>
+                <div class="member-text-area">
+                    <span class="member-role">The White Rose - Purity</span>
+                    <h3 class="member-name">御狗丸あさって</h3>
+                    <p class="member-desc">
+                        「あなたの疲れた心、真っ白にリセットさせてください。」<br>
+                        清楚で可憐な雰囲気をまとう、事務所の妹的存在。<br>
+                        朝の「おはよう配信」は多くのリスナーの生活習慣となっている。<br>
+                        見た目に反して、激辛料理が好きという意外な趣味を持つ。
+                    </p>
+                    <div class="member-tags">
+                        <span class="tag">#ゲーム実況</span>
+                        <span class="tag">#ASMR</span>
+                        <span class="tag">#解説</span>
+                    </div>
+                    <div>
+                        <a href="#" class="sns-btn">YouTube</a>
+                        <a href="#" class="sns-btn">Twitch</a>
+                        <a href="#" class="sns-btn">X (Twitter)</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- メンバー3：ぺぺろ -->
+            <div class="member-row">
+                <div class="member-img-area">
+                    <img src="images/test.png" alt="ぺぺろ">
+                </div>
+                <div class="member-text-area">
+                    <span class="member-role">The Blue Rose - Miracle</span>
+                    <h3 class="member-name">ぺぺろ</h3>
+                    <p class="member-desc">
+                        「この出会いは奇跡。だからこそ大切にしたいの。」<br>
+                        落ち着いた低音ボイスが魅力の頭脳派配信者。<br>
+                        ゲーム実況では冷静な分析を見せる一方、ホラーゲームでは絶叫してしまう可愛らしい一面も。<br>
+                        深夜のASMR配信は「安らぎの魔法」と定評がある。
+                    </p>
+                    <div class="member-tags">
+                        <span class="tag">#朝活</span>
+                        <span class="tag">#弾き語り</span>
+                        <span class="tag">#癒やし</span>
+                    </div>
+                    <div>
+                        <a href="#" class="sns-btn">YouTube</a>
+                        <a href="#" class="sns-btn">Twitch</a>
+                        <a href="#" class="sns-btn">X (Twitter)</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- メンバー4：まぁち -->
+            <div class="member-row">
+                <div class="member-img-area">
+                    <img src="images/test.png" alt="まぁち">
+                </div>
+                <div class="member-text-area">
+                    <span class="member-role">The Yellow Rose - Friendship</span>
+                    <h3 class="member-name">まぁち</h3>
+                    <p class="member-desc">
+                        「笑う門には福来たる！今日は何して遊ぶ？」<br>
+                        見ているだけで元気がもらえる、太陽のようなムードメーカー。<br>
+                        企画力が高く、視聴者参加型ゲームや大規模コラボの主催を好む。<br>
+                        誰とでもすぐに仲良くなれる才能を持ち、花言葉「友情」を体現している。
+                    </p>
+                    <div class="member-tags">
+                        <span class="tag">#参加型</span>
+                        <span class="tag">#企画屋</span>
+                        <span class="tag">#元気</span>
+                    </div>
+                    <div>
+                        <a href="#" class="sns-btn">YouTube</a>
+                        <a href="#" class="sns-btn">Twitch</a>
+                        <a href="#" class="sns-btn">X (Twitter)</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="fifth-rose">
+            <h3 style="font-family:'Cinzel',serif; color:var(--rose-light);">And the 5th Rose...</h3>
+            <p style="font-size:0.9rem; margin-top:10px; color:#888;">
+                私たちの物語を完成させるのは、<br>
+                画面の向こうにいる"あなた"です。
+            </p>
+        </div>
+    </section>
+
+    <section id="contact" style="text-align:center;">
+        <div class="section-header">
+            <span class="section-title-en">CONTACT</span>
+            <span class="section-title-ja">お問い合わせ</span>
+        </div>
+        <p>出演依頼・コラボ等のご連絡はこちらから</p>
+        <br>
+        <a href="mailto:five.rose.pro@gmail.com" style="border-bottom:1px solid var(--gold); padding-bottom:5px;">five.rose.pro@gmail.com</a></br>
+        <a href="https://x.com/FiveRosePro" style="border-bottom:1px solid var(--gold); padding-bottom:5px;">https://x.com/FiveRosePro</a>
+    </section>
+
+    <footer>
+        <div class="logo" style="justify-content:center; margin-bottom:10px;">Five<span>Rose</span></div>
+        <small>&copy; FiveRose Production.</small>
+    </footer>
+
+
+<script>
+(function(){
+    const DEFAULT_AVATAR = "images/default.png";
+    const SCHEDULE_JSON = "schedule.json";
+    const TZ = "Asia/Tokyo";
+
+    function formatTimeHM(date){
+        const d = new Date(date);
+        const fmt = new Intl.DateTimeFormat("ja-JP", { timeZone: TZ, hour: "2-digit", minute: "2-digit" });
+        return fmt.format(d);
+    }
+
+    function formatRange(startISO, endISO){
+        const s = new Date(startISO);
+        const e = new Date(endISO);
+        const ts = formatTimeHM(s);
+        const te = formatTimeHM(e);
+        return `${ts} 〜 ${te}`;
+    }
+
+    function escapeHtml(str){
+        return String(str ?? "").replace(/[&<>"']/g, (m) => ({
+            "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+        }[m]));
+    }
+
+    function normalizeFileName(name){
+        return String(name).trim()
+            .replace(/[\\/]/g, "_")
+            .replace(/[:*?"<>|]/g, "_")
+            .replace(/\s+/g, " ");
+    }
+
+    async function loadSchedule(){
+        const list = document.getElementById("schedule-list");
+        const updated = document.getElementById("schedule-updated");
+        if(!list || !updated) return;
+
+        list.innerHTML = "";
+        try{
+            const res = await fetch(SCHEDULE_JSON + "?v=" + Date.now(), { cache: "no-store" });
+            if(!res.ok) throw new Error("fetch failed");
+            const data = await res.json();
+
+            if(data && data.generated_at){
+                updated.textContent = "更新: " + data.generated_at + " / " + (data.items?.length ?? 0) + "件";
+            }else{
+                updated.textContent = "更新: --";
+            }
+
+            const items = (data.items ?? []);
+            if(items.length === 0){
+                list.innerHTML = '<div style="text-align:center; color: rgba(255,255,255,0.7); padding: 14px;">直近の予定はありません</div>';
+                return;
+            }
+
+            list.innerHTML = items.map(ev => {
+                const name = ev.name ?? "";
+                const title = ev.title ?? "";
+                const platform = (ev.platform ?? "").toLowerCase();
+                const avatarSrc = "images/" + normalizeFileName(name) + ".png";
+
+                const start = ev.start;
+                const end = ev.end;
+                const timePill = start ? formatTimeHM(start) : "--:--";
+
+                const badgePlatform = platform ? `<span class="badge">${escapeHtml(platform)}</span>` : "";
+                const badgeRange = (start && end) ? `<span class="badge">${escapeHtml(formatRange(start,end))}</span>` : "";
+
+                return `
+                <div class="schedule-card">
+                    <div class="schedule-time">
+                        <span class="time-pill">${escapeHtml(timePill)}</span>
+                    </div>
+                    <div class="schedule-main">
+                        <div class="schedule-head">
+                            <div class="avatar">
+                                <img src="${escapeHtml(avatarSrc)}" alt="" onerror="this.onerror=null;this.src='${DEFAULT_AVATAR}';">
+                            </div>
+                            <div class="name">${escapeHtml(name)}</div>
+                        </div>
+                        <div class="schedule-meta">
+                            <p class="desc">${escapeHtml(title)}</p>
+                            <div class="badges">
+                                ${badgePlatform}
+                                ${badgeRange}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join("");
+        }catch(e){
+            updated.textContent = "更新: 取得失敗";
+            list.innerHTML = '<div style="text-align:center; color: rgba(255,200,200,0.85); padding: 14px;">スケジュールの取得に失敗しました</div>';
+        }
+    }
+
+    if(document.readyState === "loading"){
+        document.addEventListener("DOMContentLoaded", loadSchedule);
+    }else{
+        loadSchedule();
+    }
+})();
+</script>
+
+</body>
+</html>
