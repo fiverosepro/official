@@ -27,14 +27,30 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
+      - name: Debug (check ICS url)
+        env:
+          CALENDAR_ICS_URL: ${{ vars.CALENDAR_ICS_URL || secrets.CALENDAR_ICS_URL }}
+        run: |
+          if [ -z "$CALENDAR_ICS_URL" ]; then
+            echo "CALENDAR_ICS_URL is EMPTY. Put it in Repository Variables or Secrets."
+            exit 1
+          fi
+          echo "CALENDAR_ICS_URL length=${#CALENDAR_ICS_URL}"
+          curl -I -L "$CALENDAR_ICS_URL" | head -n 20
+
       - name: Generate schedule.json
         env:
-          CALENDAR_ICS_URL: ${{ vars.CALENDAR_ICS_URL }}
+          CALENDAR_ICS_URL: ${{ vars.CALENDAR_ICS_URL || secrets.CALENDAR_ICS_URL }}
           SCHEDULE_TZ: "Asia/Tokyo"
-          SCHEDULE_DAYS_AHEAD: "7"
-          SCHEDULE_DAYS_BACK: "3"
+          SCHEDULE_DAYS_AHEAD: "14"
           SCHEDULE_OUT: "schedule.json"
         run: node scripts/fetch_schedule.mjs
+
+      - name: Show diff (for debugging)
+        run: |
+          ls -la
+          echo "---- schedule.json head ----"
+          head -n 40 schedule.json || true
 
       - name: Commit & push if changed
         run: |
