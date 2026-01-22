@@ -310,7 +310,56 @@
             .hero h1 { font-size: 2.2rem; }
             nav { display: none; }
         }
-    </style>
+    
+        /* --- Strong mobile overrides for schedule card --- */
+        @media (max-width: 640px){
+            .schedule-list{
+                padding: 14px;
+            }
+            .schedule-card{
+                display: block !important;
+                padding: 18px 16px 16px 16px !important;
+            }
+            .schedule-time{
+                position: absolute !important;
+                top: 12px !important;
+                left: 12px !important;
+                margin: 0 !important;
+                z-index: 3 !important;
+            }
+            .time-pill{
+                max-width: 100%;
+                font-size: 13px;
+                padding: 7px 12px;
+            }
+            .schedule-main{
+                padding-top: 46px !important; /* keep clear of time pill */
+            }
+            .schedule-head{
+                display: flex !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                gap: 12px !important;
+            }
+            .avatar{
+                width: 54px !important;
+                height: 54px !important;
+                flex: 0 0 auto;
+            }
+            .name{
+                white-space: nowrap !important;
+            }
+            .desc{
+                margin-top: 8px !important;
+            }
+            .badges{
+                justify-content: flex-start !important;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+
+</style>
 </head>
 <body id="top">
 
