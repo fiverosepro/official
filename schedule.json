@@ -1,28 +1,28 @@
 {
-  "generated_at": "2026/01/22 13:00",
+  "generated_at": "2026/01/22 13:18",
   "items": [
     {
+      "streamer": "御狗丸てち",
+      "platform": "twitch",
+      "title": "初見歓迎｜VALOソロランク配信",
+      "start": "2026-01-21T13:05:00.000Z",
+      "end": "2026-01-21T14:30:00.000Z",
+      "is_past": true
+    },
+    {
+      "streamer": "御狗丸てち",
+      "platform": "twitch",
+      "title": "【テスト】ここに配信タイトルや説明文を置く",
       "start": "2026-01-22T02:00:00.000Z",
       "end": "2026-01-22T06:00:00.000Z",
-      "start_hm": "11:00",
-      "end_hm": "15:00",
-      "start_jst": "2026/01/22 11:00",
-      "end_jst": "2026/01/22 15:00",
-      "platform": "Twitch",
-      "streamer": "御狗丸てち",
-      "title": "【テスト】ここに配信タイトルや説明文を置く",
       "is_past": false
     },
     {
+      "streamer": "御狗丸てち",
+      "platform": "twitch",
+      "title": "【テスト２】ああああああああああああああああああああああああああああ",
       "start": "2026-01-23T11:00:00.000Z",
       "end": "2026-01-23T12:00:00.000Z",
-      "start_hm": "20:00",
-      "end_hm": "21:00",
-      "start_jst": "2026/01/23 20:00",
-      "end_jst": "2026/01/23 21:00",
-      "platform": "Twitch",
-      "streamer": "御狗丸てち",
-      "title": "【テスト２】ああああああああああああああああああああああああああああ",
       "is_past": false
     }
   ]
