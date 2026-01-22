@@ -359,6 +359,32 @@
             }
         }
 
+
+        /* --- Desktop: prevent time pill overlapping avatar --- */
+        @media (min-width: 641px){
+            .schedule-card{
+                display: grid;
+                grid-template-columns: auto 1fr;
+                column-gap: 14px;
+                align-items: start;
+                padding-top: 22px;
+            }
+            .schedule-time{
+                position: relative;
+                top: auto;
+                left: auto;
+                margin: 0;
+                z-index: 1;
+                align-self: start;
+            }
+            .schedule-main{
+                padding-top: 0;
+            }
+            .schedule-head{
+                gap: 14px;
+            }
+        }
+
 </style>
 </head>
 <body id="top">
