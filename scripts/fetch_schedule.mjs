@@ -1,107 +1,126 @@
+import fs from "node:fs/promises";
+import https from "node:https";
 import ical from "node-ical";
-import fs from "node:fs";
 
 const ICS_URL = process.env.CALENDAR_ICS_URL;
 const TZ = process.env.SCHEDULE_TZ || "Asia/Tokyo";
 const DAYS_AHEAD = Number(process.env.SCHEDULE_DAYS_AHEAD || "14");
 const DAYS_BACK = Number(process.env.SCHEDULE_DAYS_BACK || "0");
-const OUT = process.env.SCHEDULE_OUT || "schedule.json";
+const OUT_FILE = process.env.SCHEDULE_OUT || "schedule.json";
 
-if (!ICS_URL) {
-  console.error("CALENDAR_ICS_URL is not set.");
-  process.exit(1);
+function fetchText(url){
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      if(res.statusCode && res.statusCode >= 400){
+        reject(new Error(`HTTP ${res.statusCode}`));
+        return;
+      }
+      res.setEncoding("utf8");
+      let data = "";
+      res.on("data", (chunk) => data += chunk);
+      res.on("end", () => resolve(data));
+    }).on("error", reject);
+  });
 }
 
-function pad2(n) {
-  return String(n).padStart(2, "0");
+function toISO(date){
+  return new Date(date).toISOString();
 }
 
-function formatJST(dt) {
-  // dt は Date。TZを厳密に扱うのは重いので、ここは「これは推論だよ」：GitHub Actions環境でも
-  // toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }) が安定して使える前提でJST表示にしてる。
-  const s = dt.toLocaleString("sv-SE", { timeZone: TZ }).replace(" ", "T");
-  // "YYYY-MM-DDTHH:mm:ss" から "YYYY/MM/DD HH:mm" に
-  const [d, t] = s.split("T");
-  const [Y, M, D] = d.split("-");
-  const [hh, mm] = t.split(":");
-  return `${Y}/${M}/${D} ${hh}:${mm}`;
-}
-
-function formatHM(dt) {
-  const s = dt.toLocaleString("sv-SE", { timeZone: TZ }).replace(" ", "T");
-  const [, t] = s.split("T");
-  const [hh, mm] = t.split(":");
-  return `${hh}:${mm}`;
-}
-
-function parseTitle(summary) {
-  // 期待フォーマット: [twitch]{ルンルン}VALOソロ
-  const m = /^\[(.+?)\]\{(.+?)\}(.*)$/.exec(summary || "");
-  if (!m) {
-    return {
-      platform: "",
-      streamer: "",
-      title: (summary || "").trim()
-    };
-  }
+function parseSummary(summary){
+  // Expected: [twitch]{御狗丸てち}VALOソロ
+  const s = String(summary || "").trim();
+  const m = s.match(/^\s*\[([^\]]+)\]\s*\{([^}]+)\}\s*(.+)\s*$/);
+  if(!m) return null;
   return {
-    platform: (m[1] || "").trim(),
-    streamer: (m[2] || "").trim(),
-    title: (m[3] || "").trim()
+    platform: m[1].trim().toLowerCase(),
+    streamer: m[2].trim(),
+    title: m[3].trim()
   };
 }
 
-(async () => {
-  const data = await ical.async.fromURL(ICS_URL, {
-    followRedirect: true,
-    headers: { "User-Agent": "fiverose-schedule-bot" }
+function formatGeneratedAt(){
+  const d = new Date();
+  const fmt = new Intl.DateTimeFormat("ja-JP", {
+    timeZone: TZ,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
   });
+  return fmt.format(d).replace(",", "");
+}
+
+async function main(){
+  if(!ICS_URL){
+    throw new Error("CALENDAR_ICS_URL is not set.");
+  }
+
+  const icsText = await fetchText(ICS_URL);
+  const parsed = ical.sync.parseICS(icsText);
 
   const now = new Date();
-  const startMin = new Date(now.getTime() - DAYS_BACK * 24 * 60 * 60 * 1000);
-  const startMax = new Date(now.getTime() + DAYS_AHEAD * 24 * 60 * 60 * 1000);
+  const rangeStart = new Date(now.getTime() - DAYS_BACK * 24 * 60 * 60 * 1000);
+  const rangeEnd = new Date(now.getTime() + DAYS_AHEAD * 24 * 60 * 60 * 1000);
 
   const items = [];
 
-  for (const k of Object.keys(data)) {
-    const ev = data[k];
-    if (!ev || ev.type !== "VEVENT") continue;
+  for(const key of Object.keys(parsed)){
+    const ev = parsed[key];
+    if(!ev || ev.type !== "VEVENT") continue;
 
-    // 終日イベント等の除外（必要ならここを調整）
-    if (!(ev.start instanceof Date) || !(ev.end instanceof Date)) continue;
+    const info = parseSummary(ev.summary);
+    if(!info) continue;
 
-    const s = ev.start;
-    const e = ev.end;
+    // 繰り返し予定（次回分だけ）
+    if(ev.rrule){
+      try{
+        const next = ev.rrule.after(rangeStart, true);
+        if(next && next <= rangeEnd){
+          const durationMs = new Date(ev.end).getTime() - new Date(ev.start).getTime();
+          const nextEnd = new Date(next.getTime() + durationMs);
+          items.push({
+            streamer: info.streamer,
+            platform: info.platform,
+            title: info.title,
+            start: toISO(next),
+            end: toISO(nextEnd),
+            is_past: nextEnd < now
+          });
+        }
+      }catch(_){}
+      continue;
+    }
 
-    // 範囲フィルタ：過去DAYS_BACK日〜未来DAYS_AHEAD日
-    // 「少し過去」表示は、終わった配信でも範囲内なら出す
-    if (e < startMin) continue;
-    if (s > startMax) continue;
+    if(!ev.start || !ev.end) continue;
 
-    const { platform, streamer, title } = parseTitle(ev.summary);
+    // 範囲外だけ捨てる
+    if(ev.end < rangeStart) continue;
+    if(ev.start > rangeEnd) continue;
 
     items.push({
-      start: s.toISOString(),
-      end: e.toISOString(),
-      start_hm: formatHM(s),
-      end_hm: formatHM(e),
-      start_jst: formatJST(s),
-      end_jst: formatJST(e),
-      platform,
-      streamer,
-      title,
-      is_past: e < now
+      streamer: info.streamer,
+      platform: info.platform,
+      title: info.title,
+      start: toISO(ev.start),
+      end: toISO(ev.end),
+      is_past: ev.end < now
     });
   }
 
-  // 表示順：開始時刻でソート（過去も混じる）
-  items.sort((a, b) => new Date(a.start) - new Date(b.start));
+  items.sort((a,b) => new Date(a.start) - new Date(b.start));
 
   const out = {
-    generated_at: formatJST(now),
+    generated_at: formatGeneratedAt(),
     items
   };
 
-  fs.writeFileSync(OUT, JSON.stringify(out, null, 2), "utf-8");
-  console.log(`Wrote ${OUT}: ${items.length} item(s)`);
-})();
+  await fs.writeFile(OUT_FILE, JSON.stringify(out, null, 2), "utf8");
+  console.log(`Wrote ${OUT_FILE} with ${items.length} items`);
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
