@@ -747,15 +747,8 @@
 
     function escapeHtml(str){
         return String(str ?? "").replace(/[&<>"']/g, (m) => ({
-            "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+            "&":"&amp;","<":"&lt;",">":"&gt;", "\"":"&quot;","'":"&#039;"
         }[m]));
-    }
-
-    function normalizeFileName(name){
-        return String(name).trim()
-            .replace(/[\\/]/g, "_")
-            .replace(/[:*?"<>|]/g, "_")
-            .replace(/\s+/g, " ");
     }
 
     async function loadSchedule(){
@@ -785,7 +778,11 @@
                 const name = ev.streamer ?? ev.name ?? "";
                 const title = ev.title ?? "";
                 const platform = (ev.platform ?? "").toLowerCase();
-                const avatarSrc = "images/" + normalizeFileName(name) + ".png";
+
+                // 重要：名前からファイル名を自動生成しない（漢字URL事故の根）
+                const avatarSrc = (ev.avatar && String(ev.avatar).trim())
+                    ? ("images/" + String(ev.avatar).trim())
+                    : DEFAULT_AVATAR;
 
                 const start = ev.start;
                 const end = ev.end;
