@@ -2,8 +2,6 @@ name: Update schedule.json
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "7,37 * * * *"
 
 permissions:
   contents: write
@@ -12,17 +10,24 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - run: npm ci || npm install
+      - name: Install dependencies
+        run: npm ci || npm install
 
       - name: Generate schedule.json
         env:
-          CALENDAR_ICS_URL: ${{ vars.CALENDAR_ICS_URL || secrets.CALENDAR_ICS_URL }}
+          CALENDAR_ICS_URL: ${{ secrets.CALENDAR_ICS_URL }}
+          SCHEDULE_TZ: "Asia/Tokyo"
+          SCHEDULE_DAYS_AHEAD: "14"
+          SCHEDULE_DAYS_BACK: "3"
+          SCHEDULE_OUT: "schedule.json"
         run: node scripts/fetch_schedule.mjs
 
       - name: Commit & push if changed
