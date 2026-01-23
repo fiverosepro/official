@@ -2,7 +2,11 @@
   "name": "fiverose-site",
   "private": true,
   "type": "module",
+  "scripts": {
+    "post:x": "node scripts/post-to-x.mjs"
+  },
   "dependencies": {
-    "node-ical": "^0.22.1"
+    "node-ical": "^0.22.1",
+    "twitter-api-v2": "^1.17.0"
   }
 }
