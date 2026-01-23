@@ -42,7 +42,7 @@ jobs:
           X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
           SCHEDULE_JSON_URL: ${{ secrets.SCHEDULE_JSON_URL }}
           HP_SCHEDULE_URL: ${{ secrets.HP_SCHEDULE_URL }}
-        run: npm run post
+        run: npm run post:x
 
       - name: Commit state if changed
         run: |
