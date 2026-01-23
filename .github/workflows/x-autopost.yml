@@ -1,0 +1,58 @@
+name: X Auto Post
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 月曜 10:00 JST = 01:00 UTC
+    - cron: "0 1 * * 1"
+    # 毎日 12:00 JST = 03:00 UTC
+    - cron: "0 3 * * *"
+    # 毎日 20:30 JST = 11:30 UTC
+    - cron: "30 11 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: x-autopost
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install
+        run: npm ci
+
+      - name: Post to X
+        env:
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+          SCHEDULE_JSON_URL: ${{ secrets.SCHEDULE_JSON_URL }}
+          HP_SCHEDULE_URL: ${{ secrets.HP_SCHEDULE_URL }}
+        run: npm run post
+
+      - name: Commit state if changed
+        run: |
+          if git status --porcelain | grep -q ".bot_state/last_posted.json"; then
+            git config user.name "x-autopost-bot"
+            git config user.email "x-autopost-bot@users.noreply.github.com"
+            git add .bot_state/last_posted.json
+            git commit -m "chore: update autopost state"
+            git push
+          else
+            echo "No state change."
+          fi
