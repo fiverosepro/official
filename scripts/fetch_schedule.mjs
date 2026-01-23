@@ -5,8 +5,17 @@ import ical from "node-ical";
 const ICS_URL = process.env.CALENDAR_ICS_URL;
 const TZ = process.env.SCHEDULE_TZ || "Asia/Tokyo";
 const DAYS_AHEAD = Number(process.env.SCHEDULE_DAYS_AHEAD || "14");
-const DAYS_BACK = Number(process.env.SCHEDULE_DAYS_BACK || "0");
+const DAYS_BACK = Number(process.env.SCHEDULE_DAYS_BACK || "3");
 const OUT_FILE = process.env.SCHEDULE_OUT || "schedule.json";
+
+// 表示名 -> 画像ファイル名（英数字）
+// ここだけ追加/修正すれば運用できる
+const AVATAR_MAP = {
+  "御狗丸てち": "techi.png",
+  "御狗丸あさって": "asatte.png",
+  "ぺぺろ": "pepero.png",
+  "まぁち": "march.png"
+};
 
 function fetchText(url){
   return new Promise((resolve, reject) => {
@@ -52,6 +61,21 @@ function formatGeneratedAt(){
   return fmt.format(d).replace(",", "");
 }
 
+function buildItem(info, startDate, endDate, now){
+  const streamer = info.streamer;
+  const avatar = AVATAR_MAP[streamer] || null;
+
+  return {
+    streamer,
+    avatar, // ここが追加（カレンダーには不要）
+    platform: info.platform,
+    title: info.title,
+    start: toISO(startDate),
+    end: toISO(endDate),
+    is_past: new Date(endDate).getTime() < now.getTime()
+  };
+}
+
 async function main(){
   if(!ICS_URL){
     throw new Error("CALENDAR_ICS_URL is not set.");
@@ -80,14 +104,7 @@ async function main(){
         if(next && next <= rangeEnd){
           const durationMs = new Date(ev.end).getTime() - new Date(ev.start).getTime();
           const nextEnd = new Date(next.getTime() + durationMs);
-          items.push({
-            streamer: info.streamer,
-            platform: info.platform,
-            title: info.title,
-            start: toISO(next),
-            end: toISO(nextEnd),
-            is_past: nextEnd < now
-          });
+          items.push(buildItem(info, next, nextEnd, now));
         }
       }catch(_){}
       continue;
@@ -99,14 +116,7 @@ async function main(){
     if(ev.end < rangeStart) continue;
     if(ev.start > rangeEnd) continue;
 
-    items.push({
-      streamer: info.streamer,
-      platform: info.platform,
-      title: info.title,
-      start: toISO(ev.start),
-      end: toISO(ev.end),
-      is_past: ev.end < now
-    });
+    items.push(buildItem(info, ev.start, ev.end, now));
   }
 
   items.sort((a,b) => new Date(a.start) - new Date(b.start));
