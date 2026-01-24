@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026/01/24 15:30",
+  "generated_at": "2026/01/24 16:00",
   "items": [
     {
       "streamer": "まぁち",
@@ -26,7 +26,7 @@
       "title": "ドラゴンクエストVII Reimagined",
       "start": "2026-01-24T05:00:00.000Z",
       "end": "2026-01-24T07:00:00.000Z",
-      "is_past": false
+      "is_past": true
     },
     {
       "streamer": "御狗丸てち",
