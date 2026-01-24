@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026/01/25 00:00",
+  "generated_at": "2026/01/25 00:30",
   "items": [
     {
       "streamer": "まぁち",
@@ -27,6 +27,15 @@
       "start": "2026-01-24T05:00:00.000Z",
       "end": "2026-01-24T07:00:00.000Z",
       "is_past": true
+    },
+    {
+      "streamer": "御狗丸あさって",
+      "avatar": "asatte.png",
+      "platform": "twitch",
+      "title": "スイフトVALORANT",
+      "start": "2026-01-25T22:00:00.000Z",
+      "end": "2026-01-25T23:00:00.000Z",
+      "is_past": false
     },
     {
       "streamer": "御狗丸てち",
