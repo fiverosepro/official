@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026/01/29 23:30",
+  "generated_at": "2026/01/30 00:00",
   "items": [
     {
       "streamer": "御狗丸てち",
@@ -35,7 +35,7 @@
       "title": "ハートピアスローライフ",
       "start": "2026-01-29T13:00:00.000Z",
       "end": "2026-01-29T15:00:00.000Z",
-      "is_past": false
+      "is_past": true
     },
     {
       "streamer": "まぁち",
