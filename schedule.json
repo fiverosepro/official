@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026/01/30 01:01",
+  "generated_at": "2026/01/30 01:31",
   "items": [
     {
       "streamer": "御狗丸てち",
@@ -36,6 +36,15 @@
       "start": "2026-01-29T13:00:00.000Z",
       "end": "2026-01-29T15:00:00.000Z",
       "is_past": true
+    },
+    {
+      "streamer": "御狗丸てち",
+      "avatar": "techi.png",
+      "platform": "twitch",
+      "title": "参加型VALORANT",
+      "start": "2026-01-30T12:00:00.000Z",
+      "end": "2026-01-30T15:00:00.000Z",
+      "is_past": false
     },
     {
       "streamer": "まぁち",
