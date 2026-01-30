@@ -1,15 +1,6 @@
 {
-  "generated_at": "2026/01/30 23:31",
+  "generated_at": "2026/01/31 00:01",
   "items": [
-    {
-      "streamer": "御狗丸てち",
-      "avatar": "techi.png",
-      "platform": "twitch",
-      "title": "ドラゴンクエストVII Reimagined",
-      "start": "2026-01-27T13:00:00.000Z",
-      "end": "2026-01-27T15:00:00.000Z",
-      "is_past": true
-    },
     {
       "streamer": "御狗丸てち",
       "avatar": "techi.png",
@@ -44,7 +35,7 @@
       "title": "参加型VALORANT",
       "start": "2026-01-30T12:00:00.000Z",
       "end": "2026-01-30T15:00:00.000Z",
-      "is_past": false
+      "is_past": true
     },
     {
       "streamer": "まぁち",
@@ -53,7 +44,7 @@
       "title": "APEX えるなーはっぴーカスタム(スクリム)",
       "start": "2026-01-30T13:00:00.000Z",
       "end": "2026-01-30T15:00:00.000Z",
-      "is_past": false
+      "is_past": true
     },
     {
       "streamer": "まぁち",
