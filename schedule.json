@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026/01/30 18:31",
+  "generated_at": "2026/01/30 19:01",
   "items": [
     {
       "streamer": "御狗丸てち",
@@ -35,7 +35,7 @@
       "title": "お試し原神",
       "start": "2026-01-30T09:00:00.000Z",
       "end": "2026-01-30T10:00:00.000Z",
-      "is_past": false
+      "is_past": true
     },
     {
       "streamer": "御狗丸てち",
